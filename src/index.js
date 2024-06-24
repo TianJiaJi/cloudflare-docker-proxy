@@ -1,17 +1,18 @@
-import DOCS from './tips.html'
+import DOCS from './tips.html'；
  
 // return tips.html
-if (url.pathname === "/") {
+export default {
+  async fetch(request, env, context) {
   return new Response(DOCS, {
     status: 200,
     headers: {
       "content-type": "text/html"
     }
   });
-}
+ }
+};
 
-
-addEventListener("fetch", (event) => {
+addEventListener("fetch"， (event) => {
   event.passThroughOnException();
   event.respondWith(handleRequest(event.request));
 });
