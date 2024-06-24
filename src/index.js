@@ -1,4 +1,4 @@
-import DOCS from './tips.html';
+import DOCS from './docker.html';
 
 // return tips.html
 export default {
@@ -13,7 +13,7 @@ export default {
 }
 
 
-addEventListener("fetch", (event) => {
+addEventListener("fetch"， (event) => {
   event.passThroughOnException();
   event.respondWith(handleRequest(event.request));
 });
