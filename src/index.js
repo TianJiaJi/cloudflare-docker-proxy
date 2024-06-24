@@ -1,6 +1,6 @@
 import DOCS from './tips.html';
 
-addEventListener("fetch"， (event) => {
+addEventListener("fetch", (event) => {
   event.passThroughOnException();
   event.respondWith(handleRequest(event.request));
 });
