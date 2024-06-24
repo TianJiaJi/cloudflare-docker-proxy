@@ -1,13 +1,15 @@
 import DOCS from './tips.html';
 
 // return tips.html
-if (url.pathname === "/") {
+export default {
+  async fetch(request, env, context) {
   return new Response(DOCS, {
     status: 200,
     headers: {
       "content-type": "text/html"
     }
   });
+  }
 }
 
 
