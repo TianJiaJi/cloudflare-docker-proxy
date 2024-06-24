@@ -6,47 +6,18 @@ import k8sHTML from './k8s.html';
 import ghcrHTML from './ghcr.html';
 import cloudsmithHTML from './cloudsmith.html';
 
-// 定义一个映射关系，子域名到其对应的HTML内容
-const htmlPages = {
-  "docker.tianjiaji.cloudns.org": dockerHTML,
-  "quay.tianjiaji.cloudns.org": quayHTML,
-  "gcr.tianjiaji.cloudns.org": gcrHTML,
-  "k8s-gcr.tianjiaji.cloudns.org": k8sGcrHTML,
-  "k8s.tianjiaji.cloudns.org": k8sHTML,
-  "ghcr.tianjiaji.cloudns.org": ghcrHTML,
-  "cloudsmith.tianjiaji.cloudns.org": cloudsmithHTML,
-};
 
-async function handleRequest(request) {
-  const url = new URL(request.url);
-  const host = url.hostname;
-
-  // 检查是否为直接通过浏览器访问（简单判断，可根据实际情况调整）
-  if (request.headers.get('User-Agent')?.includes('Mozilla')) {
-    // 如果是直接访问，根据子域名返回对应的HTML内容
-    if (htmlPages.hasOwnProperty(host)) {
-      return new Response(htmlPages[host], {
-        status: 200,
-        headers: {
-          "Content-Type": "text/html",
-        },
-      });
+// return tips.html
+export default {
+  async fetch(request, env, context) {
+  return new Response(DOCS, {
+    status: 200,
+    headers: {
+      "content-type": "text/html"
     }
+  });
   }
-
-  // 如果不是直接访问或子域名无对应HTML，则执行原有的反向代理逻辑
-  const upstream = routeByHosts(host);
-  if (upstream === "") {
-    return new Response(
-      JSON.stringify({
-        routes: routes,
-      }),
-      {
-        status: 404,
-      }
-    );
-  }
-
+}
 
 addEventListener("fetch", (event) => {
   event.passThroughOnException();
@@ -201,8 +172,4 @@ async function fetchToken(wwwAuthenticate, scope, authorization) {
     headers.set("Authorization", authorization);
   }
   return await fetch(url, { method: "GET", headers: headers });
-}
-
-
-
 }
