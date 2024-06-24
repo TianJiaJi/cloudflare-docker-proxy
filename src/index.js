@@ -13,7 +13,7 @@ export default {
 }
 
 
-addEventListener("fetch", (event) => {
+addEventListener("fetch"， (event) => {
   event.passThroughOnException();
   event.respondWith(handleRequest(event.request));
 });
@@ -31,7 +31,7 @@ const routes = {
   "cloudsmith.tianjiaji.cloudns.org": "https://docker.cloudsmith.io",
 
   // staging
-  "docker-staging.tianjiaji.cloudns.org": dockerHub,
+  // "docker-staging.tianjiaji.cloudns.org": dockerHub,
 };
 
 function routeByHosts(host) {
