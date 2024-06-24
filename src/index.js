@@ -1,5 +1,13 @@
 import DOCS from './tips.html'
  
+
+
+
+addEventListener("fetch"， (event) => {
+  event.passThroughOnException();
+  event.respondWith(handleRequest(event.request));
+});
+
 // return tips.html
 if (url.pathname === "/") {
   return new Response(DOCS, {
@@ -9,12 +17,6 @@ if (url.pathname === "/") {
     }
   });
 }
-
-
-addEventListener("fetch"， (event) => {
-  event.passThroughOnException();
-  event.respondWith(handleRequest(event.request));
-});
 
 const dockerHub = "https://registry-1.docker.io";
 
