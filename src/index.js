@@ -1,4 +1,4 @@
-import DOCS from './tips.html'；
+import DOCS from './tips.html';
  
 // return tips.html
 export default {
