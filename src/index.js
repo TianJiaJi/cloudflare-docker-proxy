@@ -6,23 +6,20 @@ import k8sHTML from './k8s.html';
 import ghcrHTML from './ghcr.html';
 import cloudsmithHTML from './cloudsmith.html';
 
-
-// return tips.html
-export default {
-  async fetch(request, env, context) {
-  return new Response(DOCS, {
-    status: 200,
-    headers: {
-      "content-type": "text/html"
-    }
-  });
-  }
-}
-
-addEventListener("fetch", (event) => {
+addEventListener("fetch"， (event) => {
   event.passThroughOnException();
   event.respondWith(handleRequest(event.request));
 });
+
+const htmlPages = {
+  "docker.tianjiaji.cloudns.org": dockerHTML,
+  "quay.tianjiaji.cloudns.org": quayHTML,
+  "gcr.tianjiaji.cloudns.org": gcrHTML,
+  "k8s-gcr.tianjiaji.cloudns.org": k8sGcrHTML,
+  "k8s.tianjiaji.cloudns.org": k8sHTML,
+  "ghcr.tianjiaji.cloudns.org": ghcrHTML,
+  "cloudsmith.tianjiaji.cloudns.org": cloudsmithHTML,
+};
 
 const dockerHub = "https://registry-1.docker.io";
 
@@ -52,7 +49,24 @@ function routeByHosts(host) {
 
 async function handleRequest(request) {
   const url = new URL(request.url);
-  const upstream = routeByHosts(url.hostname);
+  const host = url.hostname;
+
+  // 判断是否为浏览器访问
+  const isBrowserRequest = request.headers.get('User-Agent').includes('Mozilla');
+
+  // 如果是浏览器访问且有对应的HTML页面，则返回该页面
+  if (isBrowserRequest && host in htmlPages) {
+    const htmlContent = htmlPages[host];
+    return new Response(htmlContent, {
+      status: 200,
+      headers: {
+        "Content-Type": "text/html",
+      },
+    });
+  }
+
+  // 继续执行原有逻辑，例如反向代理部分
+  const upstream = routeByHosts(host);
   if (upstream === "") {
     return new Response(
       JSON.stringify({
@@ -62,7 +76,7 @@ async function handleRequest(request) {
         status: 404,
       }
     );
-  }
+    
   const isDockerHub = upstream == dockerHub;
   const authorization = request.headers.get("Authorization");
   if (url.pathname == "/v2/") {
