@@ -1,5 +1,6 @@
 import DOCS from './docker.html';
 
+
 export default {
   async fetch(request, env, context) {
   return new Response(DOCS, {
@@ -11,7 +12,7 @@ export default {
   }
 }
 
-addEventListener("fetch", (event) => {
+addEventListener("fetch"， (event) => {
   event.passThroughOnException();
   event.respondWith(handleRequest(event.request));
 });
