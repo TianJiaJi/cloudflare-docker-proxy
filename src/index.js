@@ -1,22 +1,9 @@
-import DOCS from './tips.html'
- 
-
-
 
 addEventListener("fetch"， (event) => {
   event.passThroughOnException();
   event.respondWith(handleRequest(event.request));
 });
 
-// return tips.html
-if (url.pathname === "/") {
-  return new Response(DOCS, {
-    status: 200,
-    headers: {
-      "content-type": "text/html"
-    }
-  });
-}
 
 const dockerHub = "https://registry-1.docker.io";
 
